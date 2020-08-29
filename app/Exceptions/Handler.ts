@@ -30,5 +30,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 				}]
 			})
 		}
+
+		return super.handle(error, ctx)
 	}
 }
