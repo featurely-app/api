@@ -12,7 +12,7 @@ export default class TenantSeeder extends BaseSeeder {
 			for (let project of projects) {
 				project.useTransaction(trx)
 
-				const phases = await project.related('phases').createMany([
+				const statuses = await project.related('statuses').createMany([
 					{
 						name: 'Open',
 						order: 1,
@@ -39,15 +39,15 @@ export default class TenantSeeder extends BaseSeeder {
 					},
 				])
 
-				const postPhases = new Array(30).fill(1).map(() => {
+				const postStatuses = new Array(30).fill(1).map(() => {
 					return {
-						phaseId: phases[Math.floor(Math.random() * (phases.length - 0) + 0)].id,
+						phaseId: statuses[Math.floor(Math.random() * (statuses.length - 0) + 0)].id,
 						projectId: project.id,
 						userId: tenant.owner.id,
 					}
 				})
 
-				await PostFactory.merge(postPhases)
+				await PostFactory.merge(postStatuses)
 					.client(trx)
 					.with('threads', 20, (factory) => {
 						factory.merge({
