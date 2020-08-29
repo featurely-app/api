@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node ace build",
     "start": "node ace serve --watch",
+    "seed": "node ace db:seed",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write ."
   },
