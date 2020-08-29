@@ -27,4 +27,4 @@ Route.group(() => {
 	Route.get('projects/:id/posts', 'PostsController.index')
 	Route.get('posts/:id', 'PostsController.show')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
-}).prefix('api')
+}).prefix('v1')
