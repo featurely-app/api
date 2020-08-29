@@ -21,7 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-	Route.get('projects/:id', 'ProjectsController.show')
+	Route.get('projects/:id', 'ProjectsController.show').as('showProject')
 	Route.get('posts/:id', 'PostsController.show').as('showPost')
 }).prefix('web')
 
