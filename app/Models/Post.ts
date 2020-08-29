@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { SortOptions } from 'Contracts/enums'
 
 import User from 'App/Models/User'
+import Database from '@ioc:Adonis/Lucid/Database'
 import PostThread from 'App/Models/PostThread'
 import PostUpvote from 'App/Models/PostUpvote'
 import Slugify from 'App/Models/Traits/Slugify'
@@ -61,6 +62,11 @@ export default class Post extends BaseModel {
 	public author: BelongsTo<typeof User>
 
 	@computed()
+	public get upvotedByMe() {
+		return !!this.$extras.is_upvoted
+	}
+
+	@computed()
 	public get upvotesCount() {
 		return this.$extras.upvotes_count === undefined ? undefined : Number(this.$extras.upvotes_count)
 	}
@@ -83,6 +89,27 @@ export default class Post extends BaseModel {
 
 	public static filterByPhase = scope((query, phases: string[]) => {
 		query.whereIn('phaseId', phases)
+	})
+
+	/**
+	 * Adds a boolean to the query when post is liked by a user
+	 */
+	public static findUserUpvotes = scope((query, userId: string) => {
+		query.select(
+			Database.raw(
+				`SELECT
+			CASE
+				WHEN user_id = null
+				THEN 0
+				ELSE 1
+			END as is_upvoted
+			FROM post_upvotes
+			WHERE posts.id = post_upvotes.post_id
+			AND user_id = (?)
+			LIMIT 1`,
+				[userId]
+			).wrap('(', ')')
+		)
 	})
 
 	public serialize() {

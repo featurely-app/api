@@ -31,6 +31,6 @@ Route.group(() => {
 
 	Route.group(() => {
 		Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
-		Route.delete('posts/:id/upvotes', 'PostUpvotesController.store')
+		Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
 	}).middleware('auth')
 }).prefix('v1')

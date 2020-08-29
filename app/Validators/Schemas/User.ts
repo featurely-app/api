@@ -8,13 +8,8 @@ export const userSchema = {
 		rules.email(),
 		rules.unique({ table: 'users', column: 'email' }),
 	]),
-	password: schema.string({ trim: true }, [
-		rules.minLength(6),
-		rules.maxLength(50),
-	]),
-	fullName: schema.string({ trim: true }, [
-		rules.maxLength(200),
-	]),
+	password: schema.string({ trim: true }, [rules.minLength(6), rules.maxLength(50)]),
+	fullName: schema.string({ trim: true }, [rules.maxLength(200)]),
 }
 
 /**

@@ -9,7 +9,7 @@ import Env from '@ioc:Adonis/Core/Env'
 import { SessionConfig } from '@ioc:Adonis/Addons/Session'
 
 const sessionConfig: SessionConfig = {
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Driver
   |--------------------------------------------------------------------------
@@ -24,9 +24,9 @@ const sessionConfig: SessionConfig = {
   | Note: Switching drivers will make existing sessions invalid.
   |
   */
-  driver: Env.get('SESSION_DRIVER', 'cookie') as string,
+	driver: Env.get('SESSION_DRIVER', 'cookie') as string,
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Cookie name
   |--------------------------------------------------------------------------
@@ -34,9 +34,9 @@ const sessionConfig: SessionConfig = {
   | The name of the cookie that will hold the session id.
   |
   */
-  cookieName: 'adonis-session',
+	cookieName: 'adonis-session',
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Clear session when browser closes
   |--------------------------------------------------------------------------
@@ -45,9 +45,9 @@ const sessionConfig: SessionConfig = {
   | this value to `true` will ignore the `age`.
   |
   */
-  clearWithBrowser: false,
+	clearWithBrowser: false,
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Session age
   |--------------------------------------------------------------------------
@@ -61,9 +61,9 @@ const sessionConfig: SessionConfig = {
   | Example: `2 days`, `2.5 hrs`, `1y`, `5s` and so on.
   |
   */
-  age: '2h',
+	age: '2h',
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Cookie values
   |--------------------------------------------------------------------------
@@ -72,13 +72,13 @@ const sessionConfig: SessionConfig = {
   | driver will use the same values.
   |
   */
-  cookie: {
-    path: '/',
-    httpOnly: true,
-    sameSite: 'strict',
-  },
+	cookie: {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
+	},
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Configuration for file driver
   |--------------------------------------------------------------------------
@@ -87,11 +87,11 @@ const sessionConfig: SessionConfig = {
   | must be stored.
   |
   */
-  file: {
-    location: '',
-  },
+	file: {
+		location: '',
+	},
 
-  /*
+	/*
   |--------------------------------------------------------------------------
   | Redis driver
   |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ const sessionConfig: SessionConfig = {
   | must be defined inside `config/redis.ts` file
   |
   */
-  redisConnection: 'session',
+	redisConnection: 'session',
 }
 
 export default sessionConfig

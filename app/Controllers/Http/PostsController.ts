@@ -5,7 +5,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
-	public async index({ params, request }: HttpContextContract) {
+	public async index({ params, auth, request }: HttpContextContract) {
 		const payload = await request.validate({
 			schema: schema.create({
 				sort: schema.enum.optional(Object.values(SortOptions)),
@@ -25,6 +25,11 @@ export default class PostsController {
 			.withCount('threads')
 			.preload('status')
 			.preload('author')
+			.apply((scopes) => {
+				if (auth.user) {
+					scopes.findUserUpvotes(auth.user.id)
+				}
+			})
 
 		if (payload.sort) {
 			query.apply((scopes) => scopes.sortBy(payload.sort!))
@@ -41,19 +46,24 @@ export default class PostsController {
 				perPage: posts.perPage,
 				currentPage: posts.currentPage,
 				lastPage: posts.lastPage,
-				firstPage: posts.firstPage
+				firstPage: posts.firstPage,
 			},
-			data: posts.all()
+			data: posts.all(),
 		}
 	}
 
-	public async show({ params }: HttpContextContract) {
+	public async show({ params, auth }: HttpContextContract) {
 		const post = await Post.query()
 			.withCount('upvotes')
 			.withCount('threads')
 			.preload('status')
 			.preload('author')
 			.where('id', params.id)
+			.apply((scopes) => {
+				if (auth.user) {
+					scopes.findUserUpvotes(auth.user.id)
+				}
+			})
 			.firstOrFail()
 
 		return {

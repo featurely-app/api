@@ -25,9 +25,9 @@ export default class ThreadsController {
 				perPage: threads.perPage,
 				currentPage: threads.currentPage,
 				lastPage: threads.lastPage,
-				firstPage: threads.firstPage
+				firstPage: threads.firstPage,
 			},
-			data: threads.all()
+			data: threads.all(),
 		}
 	}
 }

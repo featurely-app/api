@@ -25,9 +25,11 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 	public async handle(error: any, ctx: HttpContextContract) {
 		if (error.code === 'E_ROW_NOT_FOUND') {
 			ctx.response.send({
-				errors: [{
-					message: 'Resource not found'
-				}]
+				errors: [
+					{
+						message: 'Resource not found',
+					},
+				],
 			})
 		}
 
