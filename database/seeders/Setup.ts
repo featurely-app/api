@@ -56,7 +56,7 @@ export default class TenantSeeder extends BaseSeeder {
 					})
 					.with('upvotes', Math.floor(Math.random() * (20 - 1) + 1), (factory) => {
 						factory.merge({
-							userId: users[Math.floor(Math.random() * (phases.length - 0) + 0)].id,
+							userId: users[Math.floor(Math.random() * (users.length - 0) + 0)].id,
 						})
 					})
 					.createMany(30)
