@@ -33,7 +33,7 @@ export default class Project extends BaseModel {
 	public posts: HasMany<typeof Post>
 
 	@hasMany(() => ProjectPhase)
-	public phases: HasMany<typeof ProjectPhase>
+	public statuses: HasMany<typeof ProjectPhase>
 }
 
 Slugify(Project, 'name')

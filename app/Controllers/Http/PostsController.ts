@@ -20,9 +20,10 @@ export default class PostsController {
 		const query = project
 			.related('posts')
 			.query()
+			.select('title', 'id', 'slug', 'createdAt', 'updatedAt', 'phaseId', 'userId')
 			.withCount('upvotes')
 			.withCount('threads')
-			.preload('phase')
+			.preload('status')
 			.preload('author')
 
 		if (payload.sort) {
@@ -34,14 +35,23 @@ export default class PostsController {
 		}
 
 		const posts = await query.paginate(payload.page || 1, 30)
-		return posts
+		return {
+			meta: {
+				total: posts.total,
+				perPage: posts.perPage,
+				currentPage: posts.currentPage,
+				lastPage: posts.lastPage,
+				firstPage: posts.firstPage
+			},
+			data: posts.all()
+		}
 	}
 
 	public async show({ params }: HttpContextContract) {
 		const post = await Post.query()
 			.withCount('upvotes')
 			.withCount('threads')
-			.preload('phase')
+			.preload('status')
 			.preload('author')
 			.where('id', params.id)
 			.firstOrFail()

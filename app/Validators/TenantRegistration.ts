@@ -1,5 +1,6 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { userSchema, messages } from 'App/Validators/Schemas/User'
 
 const SUBDOMAIN_BLACKLIST = [
 	'adonisjs',
@@ -24,7 +25,7 @@ const SUBDOMAIN_BLACKLIST = [
 	'alpha'
 ]
 
-export default class RegisterUserValidator {
+export default class TenantRegistrationValidator {
   constructor (private ctx: HttpContextContract) {
   }
 
@@ -48,17 +49,7 @@ export default class RegisterUserValidator {
    *    ```
    */
   public schema = schema.create({
-		email: schema.string({ trim: true }, [
-			rules.email(),
-			rules.unique({ table: 'users', column: 'email' }),
-		]),
-		password: schema.string({ trim: true }, [
-			rules.minLength(6),
-			rules.maxLength(50),
-		]),
-		full_name: schema.string({ trim: true }, [
-			rules.maxLength(200),
-		]),
+		...userSchema,
 		subdomain: schema.string({ trim: true }, [
 			rules.regex(/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$/),
 			rules.minLength(3),
@@ -92,9 +83,9 @@ export default class RegisterUserValidator {
    * }
   */
   public messages = {
+  	...messages,
   	'subdomain.blacklist': 'The subdomain is not available',
   	'subdomain.minLength': 'The subdomain must be 3 characters long',
-  	'subdomain.unique': 'The subdomain is not available',
-  	'email.unique': 'The email address is already in use'
+  	'subdomain.unique': 'The subdomain is not available'
   }
 }

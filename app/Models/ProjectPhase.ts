@@ -30,7 +30,7 @@ export default class ProjectPhase extends BaseModel {
 	})
 	public posts: HasMany<typeof Post>
 
-	@computed({ serializeAs: 'posts_count' })
+	@computed()
 	public get postsCount() {
 		return this.$extras.posts_count === undefined ? undefined : Number(this.$extras.posts_count)
 	}

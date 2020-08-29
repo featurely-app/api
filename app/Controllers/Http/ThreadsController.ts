@@ -19,6 +19,15 @@ export default class ThreadsController {
 			.preload('author')
 			.paginate(payload.page || 1, 20)
 
-		return threads
+		return {
+			meta: {
+				total: threads.total,
+				perPage: threads.perPage,
+				currentPage: threads.currentPage,
+				lastPage: threads.lastPage,
+				firstPage: threads.firstPage
+			},
+			data: threads.all()
+		}
 	}
 }

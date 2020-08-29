@@ -49,7 +49,7 @@ export default class Post extends BaseModel {
 	@belongsTo(() => ProjectPhase, {
 		foreignKey: 'phaseId',
 	})
-	public phase: BelongsTo<typeof ProjectPhase>
+	public status: BelongsTo<typeof ProjectPhase>
 
 	@hasMany(() => PostUpvote)
 	public upvotes: HasMany<typeof PostUpvote>
@@ -60,12 +60,12 @@ export default class Post extends BaseModel {
 	@belongsTo(() => User)
 	public author: BelongsTo<typeof User>
 
-	@computed({ serializeAs: 'upvotes_count' })
+	@computed()
 	public get upvotesCount() {
 		return this.$extras.upvotes_count === undefined ? undefined : Number(this.$extras.upvotes_count)
 	}
 
-	@computed({ serializeAs: 'threads_count' })
+	@computed()
 	public get threadsCount() {
 		return this.$extras.threads_count === undefined ? undefined : Number(this.$extras.threads_count)
 	}
