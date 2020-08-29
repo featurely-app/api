@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" integrity="sha512-G3jAqT2eM4MMkLMyQR5YBhvN5/Da3IG6kqgYqU9zlIH4+2a+GuMdLb5Kpxy6ItMdCfgaKlo2XFhI0dHtMJjoRw==" crossorigin="anonymous"></script>
+
+	<style type="text/css">
+		.layout {
+			display: flex;
+			width: 980px;
+			margin: auto;
+		}
+
+		.layout aside {
+			width: 300px;
+			flex-shrink: 0;
+		}
+	</style>
+</head>
+<body>
+
+	<section>
+		<div class="layout">
+			<article>
+				<h1><a href="{{ route('showPost', { id: post.id }) }}">{{ post.title }}</a></h1>
+				<span>{{ post.upvotesCount }}</span>
+				<span>{{ post.threadsCount }}</span>
+				<span>{{ post.author.fullName }}</span>
+
+				<div>
+					{{ post.description }}
+				</div>
+			</article>
+		</div>
+	</section>
+</body>
+</html>

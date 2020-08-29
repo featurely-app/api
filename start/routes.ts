@@ -21,6 +21,11 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
+	Route.get('projects/:id', 'ProjectsController.show')
+	Route.get('posts/:id', 'PostsController.show').as('showPost')
+}).prefix('web')
+
+Route.group(() => {
 	Route.post('tenants/register', 'TenantsController.register')
 	Route.post('users/register', 'UsersController.register')
 	Route.post('login', 'UsersController.login')

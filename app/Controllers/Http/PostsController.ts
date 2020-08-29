@@ -52,7 +52,7 @@ export default class PostsController {
 		}
 	}
 
-	public async show({ params, auth }: HttpContextContract) {
+	public async show({ params, auth, request, view }: HttpContextContract) {
 		const post = await Post.query()
 			.withCount('upvotes')
 			.withCount('threads')
@@ -65,6 +65,10 @@ export default class PostsController {
 				}
 			})
 			.firstOrFail()
+
+		if (request.url().startsWith('/web')) {
+			return view.render('post', { post })
+		}
 
 		return {
 			data: post,
