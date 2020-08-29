@@ -20,10 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/dashboard', async () => {
-	return { all: true }
-}).middleware('auth')
-
 Route.group(() => {
 	Route.post('tenants/register', 'TenantsController.register')
 	Route.post('users/register', 'UsersController.register')
@@ -37,5 +33,4 @@ Route.group(() => {
 		Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
 		Route.delete('posts/:id/upvotes', 'PostUpvotesController.store')
 	}).middleware('auth')
-
 }).prefix('v1')
