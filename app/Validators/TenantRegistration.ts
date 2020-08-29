@@ -56,7 +56,7 @@ export default class TenantRegistrationValidator {
 			rules.blacklist(SUBDOMAIN_BLACKLIST),
 			rules.unique({ table: 'tenants', column: 'subdomain' }),
 		]),
-		business_name: schema.string({ trim: true }, [
+		businessName: schema.string({ trim: true }, [
 			rules.minLength(3),
 			rules.maxLength(200),
 		])

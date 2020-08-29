@@ -12,7 +12,7 @@ export const userSchema = {
 		rules.minLength(6),
 		rules.maxLength(50),
 	]),
-	full_name: schema.string({ trim: true }, [
+	fullName: schema.string({ trim: true }, [
 		rules.maxLength(200),
 	]),
 }

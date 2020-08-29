@@ -13,12 +13,12 @@ export default class TenantsController {
 			user.email = payload.email
 			user.password = payload.password
 			user.accountSource = 'password'
-			user.fullName = payload.full_name
+			user.fullName = payload.fullName
 			await user.useTransaction(trx).save()
 
 			const tenant = new Tenant()
 			tenant.subdomain = payload.subdomain
-			tenant.businessName = payload.business_name
+			tenant.businessName = payload.businessName
 			tenant.useTransaction(trx)
 			await tenant.related('owner').associate(user)
 

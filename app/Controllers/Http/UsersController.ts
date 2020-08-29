@@ -10,7 +10,7 @@ export default class UsersController {
 		user.email = payload.email
 		user.password = payload.password
 		user.accountSource = 'password'
-		user.fullName = payload.full_name
+		user.fullName = payload.fullName
 		await user.save()
 
 		await auth.login(user)
