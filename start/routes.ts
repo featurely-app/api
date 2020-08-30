@@ -20,6 +20,9 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.get('oauth/:provider/redirect', 'UsersController.socialRedirect')
+Route.get('oauth/:provider/callback', 'UsersController.socialCallback')
+
 Route.group(() => {
 	Route.get('projects/:id', 'ProjectsController.show').as('showProject')
 	Route.get('posts/:id', 'PostsController.show').as('showPost')

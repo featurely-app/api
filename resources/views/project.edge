@@ -6,8 +6,6 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" integrity="sha512-G3jAqT2eM4MMkLMyQR5YBhvN5/Da3IG6kqgYqU9zlIH4+2a+GuMdLb5Kpxy6ItMdCfgaKlo2XFhI0dHtMJjoRw==" crossorigin="anonymous"></script>
 
-	<script type="text/javascript" src="/app.js"></script>
-
 	<style type="text/css">
 		.layout {
 			display: flex;
@@ -24,6 +22,13 @@
 <body>
 
 	<section>
+		<a href="{{
+			route('UsersController.socialRedirect', { provider: 'github' })
+		}}" data-turbolinks="false"> Login with Github </a>
+		<hr>
+
+		<h2>Hello {{ auth.isLoggedIn ? auth.user.email : 'Guest!' }} </h2>
+
 		<div class="layout">
 			<aside>
 				@each(status in project.statuses)

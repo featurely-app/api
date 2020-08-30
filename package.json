@@ -32,10 +32,13 @@
     "@adonisjs/session": "^3.1.2",
     "@adonisjs/view": "^2.0.8",
     "@slynova/slug": "^1.1.2",
+    "got": "^11.5.2",
     "luxon": "^1.25.0",
+    "oauth": "^0.9.15",
     "pg": "^8.3.2",
     "phc-argon2": "^1.0.10",
     "proxy-addr": "^2.0.6",
+    "qs": "^6.9.4",
     "reflect-metadata": "^0.1.13",
     "slugify": "^1.4.5",
     "source-map-support": "^0.5.19"

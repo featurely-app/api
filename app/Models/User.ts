@@ -38,8 +38,12 @@ export default class User extends BaseModel {
 	}
 
 	@beforeSave()
-	public static async generateAvatarUrl(user: User) {
-		if (user.$dirty.fullName) {
+	public static async normalizeUserPayload(user: User) {
+		if (!user.fullName) {
+			user.fullName = user.email.replace(/@.+/, '')
+		}
+
+		if (user.$dirty.fullName && !user.avatarUrl) {
 			user.avatarUrl = `https://ui-avatars.com/api/?name=${user.fullName}`
 		}
 	}
