@@ -31,10 +31,7 @@ export default class PostsController {
 				}
 			})
 
-		if (payload.sort) {
-			query.apply((scopes) => scopes.sortBy(payload.sort!))
-		}
-
+		query.apply((scopes) => scopes.sortBy(payload.sort || SortOptions.latest))
 		if (payload.filters?.phase) {
 			query.apply((scopes) => scopes.filterByPhase(payload.filters?.phase!))
 		}

@@ -15,7 +15,7 @@ export default class ThreadsController {
 		const threads = await post
 			.related('threads')
 			.query()
-			.orderBy('id', 'desc')
+			.orderBy('createdAt', 'asc')
 			.preload('author')
 			.paginate(payload.page || 1, 20)
 
