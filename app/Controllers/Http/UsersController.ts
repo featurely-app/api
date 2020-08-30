@@ -81,11 +81,14 @@ export default class UsersController {
 		/**
 		 * Create or fetch existing user
 		 */
-		const user = await User.firstOrCreate({ email: email }, {
-			fullName: name,
-			avatarUrl: avatarUrl,
-			accountSource: 'github',
-		})
+		const user = await User.firstOrCreate(
+			{ email: email },
+			{
+				fullName: name,
+				avatarUrl: avatarUrl,
+				accountSource: 'github',
+			}
+		)
 
 		/**
 		 * Login and redirect

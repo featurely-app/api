@@ -3,7 +3,7 @@ import qs from 'qs'
 export class AuthorizationRequest {
 	private options: any = { searchParams: {} }
 
-	constructor (private url: string) {}
+	constructor(private url: string) {}
 
 	/**
 	 * Define a query string

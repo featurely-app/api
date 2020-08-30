@@ -9,7 +9,7 @@ export class BaseRequest {
 		acceptJSON: false,
 	}
 
-	constructor (private url: string) {}
+	constructor(private url: string) {}
 
 	/**
 	 * Define a query string
