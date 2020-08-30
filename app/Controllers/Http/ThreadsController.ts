@@ -30,4 +30,19 @@ export default class ThreadsController {
 			data: threads.all(),
 		}
 	}
+
+	public async store({ request, params, auth }: HttpContextContract) {
+		const payload = await request.validate({
+			schema: schema.create({
+				comment: schema.string(),
+			}),
+		})
+
+		const post = await Post.findOrFail(params.id)
+		const thread = await post
+			.related('threads')
+			.create({ userId: auth.user!.id, comment: payload.comment })
+
+		return thread
+	}
 }

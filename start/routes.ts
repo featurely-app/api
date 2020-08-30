@@ -33,6 +33,7 @@ Route.group(() => {
 	Route.get('projects/:id/posts', 'PostsController.index')
 	Route.get('posts/:id', 'PostsController.show')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
+	Route.post('posts/:id/threads', 'ThreadsController.store')
 
 	Route.group(() => {
 		Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
