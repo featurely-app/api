@@ -58,21 +58,21 @@ export default class ThreadsController {
 
 		const thread = await PostThread.findOrFail(params.id)
 		response.abortIf(thread.userId !== auth.user!.id, {
-			errors: [{ message: 'Unauthorized to modify comment' }]
+			errors: [{ message: 'Unauthorized to modify comment' }],
 		})
 
 		thread.comment = payload.comment
 		await thread.save()
 
 		return {
-			data: thread
+			data: thread,
 		}
 	}
 
 	public async delete({ response, auth, params }: HttpContextContract) {
 		const thread = await PostThread.findOrFail(params.id)
 		response.abortIf(thread.userId !== auth.user!.id, {
-			errors: [{ message: 'Unauthorized to modify comment' }]
+			errors: [{ message: 'Unauthorized to modify comment' }],
 		})
 
 		await thread.delete()
