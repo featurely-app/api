@@ -20,26 +20,51 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+/**
+ * Authenticate socially
+ */
 Route.get('oauth/:provider/redirect', 'UsersController.socialRedirect')
 Route.get('oauth/:provider/callback', 'UsersController.socialCallback')
 
+/**
+ * Dummy app
+ */
 Route.group(() => {
 	Route.get('projects/:id', 'ProjectsController.show').as('showProject')
 	Route.get('posts/:id', 'PostsController.show').as('showPost')
 }).prefix('web')
 
 Route.group(() => {
+	/**
+	 * Login using Ajax requests
+	 */
 	Route.post('tenants/register', 'TenantsController.register')
 	Route.post('users/register', 'UsersController.register')
 	Route.post('login', 'UsersController.login')
+
+	/**
+	 * View public projects and posts
+	 */
+	Route.get('posts/:id', 'PostsController.show')
 	Route.get('projects/:id', 'ProjectsController.show')
 	Route.get('projects/:id/posts', 'PostsController.index')
-	Route.get('posts/:id', 'PostsController.show')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
-	Route.post('posts/:id/threads', 'ThreadsController.store')
 
+	/**
+	 * Must be authenticated
+	 */
 	Route.group(() => {
+		/**
+		 * Create delete upvotes
+		 */
 		Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
 		Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
+
+		/**
+		 * Create/Edit/Delete threads
+		 */
+		Route.post('posts/:id/threads', 'ThreadsController.store')
+		Route.put('threads/:id', 'ThreadsController.update')
+		Route.delete('threads/:id', 'ThreadsController.delete')
 	}).middleware('auth')
 }).prefix('v1')
