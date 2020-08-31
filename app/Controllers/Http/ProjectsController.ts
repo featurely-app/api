@@ -13,7 +13,7 @@ export default class ProjectsController {
 				schema: schema.create({
 					sort: schema.enum.optional(Object.values(SortOptions)),
 					filters: schema.object.optional().members({
-						phase: schema.array.optional().members(schema.string()),
+						phase: schema.string(),
 					}),
 					page: schema.number.optional(),
 				}),
@@ -38,7 +38,7 @@ export default class ProjectsController {
 			}
 
 			if (payload.filters?.phase) {
-				query.apply((scopes) => scopes.filterByPhase(payload.filters?.phase!))
+				query.apply((scopes) => scopes.filterByStatus(payload.filters?.phase!))
 			}
 
 			const posts = await query.paginate(payload.page || 1, 30)

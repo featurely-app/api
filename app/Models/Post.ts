@@ -76,6 +76,11 @@ export default class Post extends BaseModel {
 		return this.$extras.threads_count === undefined ? undefined : Number(this.$extras.threads_count)
 	}
 
+	@computed()
+	public get html() {
+		return this.$extras.html === undefined ? undefined : this.$extras.html
+	}
+
 	public static sortBy = scope((query, sortOption: SortOptions) => {
 		if (sortOption === 'latest') {
 			query.orderBy('updatedAt', 'desc')
@@ -87,8 +92,8 @@ export default class Post extends BaseModel {
 		}
 	})
 
-	public static filterByPhase = scope((query, phases: string[]) => {
-		query.whereIn('phaseId', phases)
+	public static filterByStatus = scope((query, phases: string) => {
+		query.whereIn('phaseId', phases.split(','))
 	})
 
 	/**
@@ -112,8 +117,9 @@ export default class Post extends BaseModel {
 		)
 	})
 
-	public serialize() {
+	public serialize(fields?: any) {
 		return super.serialize({
+			fields: fields,
 			relations: {
 				phase: {
 					fields: {

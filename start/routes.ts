@@ -25,6 +25,7 @@ import Route from '@ioc:Adonis/Core/Route'
  */
 Route.get('oauth/:provider/redirect', 'UsersController.socialRedirect')
 Route.get('oauth/:provider/callback', 'UsersController.socialCallback')
+Route.get('oauth/exchange', 'UsersController.exchangeToken')
 
 /**
  * Dummy app
@@ -54,6 +55,8 @@ Route.group(() => {
 	 * Must be authenticated
 	 */
 	Route.group(() => {
+		Route.get('me', 'UsersController.me')
+
 		/**
 		 * Create delete upvotes
 		 */

@@ -1,4 +1,5 @@
 import Post from 'App/Models/Post'
+import Markdown from '@dimerapp/markdown'
 import Project from 'App/Models/Project'
 import { SortOptions } from 'Contracts/enums'
 import { schema } from '@ioc:Adonis/Core/Validator'
@@ -10,7 +11,7 @@ export default class PostsController {
 			schema: schema.create({
 				sort: schema.enum.optional(Object.values(SortOptions)),
 				filters: schema.object.optional().members({
-					phase: schema.array.optional().members(schema.string()),
+					status: schema.string(),
 				}),
 				page: schema.number.optional(),
 			}),
@@ -32,8 +33,8 @@ export default class PostsController {
 			})
 
 		query.apply((scopes) => scopes.sortBy(payload.sort || SortOptions.latest))
-		if (payload.filters?.phase) {
-			query.apply((scopes) => scopes.filterByPhase(payload.filters?.phase!))
+		if (payload.filters?.status) {
+			query.apply((scopes) => scopes.filterByStatus(payload.filters?.status!))
 		}
 
 		const posts = await query.paginate(payload.page || 1, 30)
@@ -63,12 +64,15 @@ export default class PostsController {
 			})
 			.firstOrFail()
 
+		const html = await new Markdown(post.description).toHTML()
+		post.$extras.html = html.contents
+
 		if (request.url().startsWith('/web')) {
 			return view.render('post', { post })
 		}
 
 		return {
-			data: post,
+			data: post.serialize({ omit: ['description'] }),
 		}
 	}
 }

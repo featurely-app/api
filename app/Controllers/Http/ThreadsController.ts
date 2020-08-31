@@ -18,7 +18,7 @@ export default class ThreadsController {
 			.query()
 			.orderBy('createdAt', 'asc')
 			.preload('author')
-			.paginate(payload.page || 1, 20)
+			.paginate(payload.page || 1, 100)
 
 		return {
 			meta: {
