@@ -18,5 +18,11 @@
 		"@adonisjs/view",
 		"@adonisjs/session"
 	],
-	"metaFiles": [".env", ".adonisrc.json", "resources/views/**/*.edge", "public/**", "database/fixtures/*.md"]
+	"metaFiles": [
+		".env",
+		".adonisrc.json",
+		"resources/views/**/*.edge",
+		"public/**",
+		"database/fixtures/*.md"
+	]
 }
