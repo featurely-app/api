@@ -30,9 +30,11 @@
     "@adonisjs/lucid": "^8.4.1",
     "@adonisjs/mail": "^4.2.2",
     "@adonisjs/session": "^3.1.2",
-    "@adonisjs/view": "^2.0.8",
+    "@adonisjs/view": "^2.0.9",
     "@dimerapp/markdown": "^3.2.2",
     "@slynova/slug": "^1.1.2",
+    "dimer-edge": "^1.0.1",
+    "dimer-edge-shiki": "^1.0.0",
     "got": "^11.5.2",
     "luxon": "^1.25.0",
     "pg": "^8.3.2",
@@ -41,6 +43,7 @@
     "qs": "^6.9.4",
     "reflect-metadata": "^0.1.13",
     "slugify": "^1.4.5",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "truncatise": "0.0.8"
   }
 }

@@ -23,51 +23,47 @@ import Route from '@ioc:Adonis/Core/Route'
 /**
  * Authenticate socially
  */
-Route.get('oauth/:provider/redirect', 'UsersController.socialRedirect')
-Route.get('oauth/:provider/callback', 'UsersController.socialCallback')
-Route.get('oauth/exchange', 'UsersController.exchangeToken')
+Route.group(() => {
+	Route.get(':provider/redirect', 'OauthController.redirect')
+	Route.get(':provider/callback', 'OauthController.callback')
+	Route.get('exchange', 'OauthController.tokenExchange')
+}).prefix('oauth')
 
 /**
- * Dummy app
+ * Login directly
  */
 Route.group(() => {
-	Route.get('projects/:id', 'ProjectsController.show').as('showProject')
-	Route.get('posts/:id', 'PostsController.show').as('showPost')
-}).prefix('web')
-
-Route.group(() => {
-	/**
-	 * Login using Ajax requests
-	 */
 	Route.post('tenants/register', 'TenantsController.register')
 	Route.post('users/register', 'UsersController.register')
 	Route.post('login', 'UsersController.login')
+}).prefix('v1')
+
+/**
+ * Must be authenticated
+ */
+Route.group(() => {
+	Route.get('me', 'UsersController.me')
 
 	/**
-	 * View public projects and posts
+	 * Create delete upvotes
 	 */
+	Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
+	Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
+
+	/**
+	 * Create/Edit/Delete threads
+	 */
+	Route.post('posts/:id/threads', 'ThreadsController.store')
+	Route.put('threads/:id', 'ThreadsController.update')
+	Route.delete('threads/:id', 'ThreadsController.delete')
+}).prefix('v1').middleware('auth')
+
+/**
+ * View public projects and posts
+ */
+Route.group(() => {
 	Route.get('posts/:id', 'PostsController.show')
 	Route.get('projects/:id', 'ProjectsController.show')
 	Route.get('projects/:id/posts', 'PostsController.index')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
-
-	/**
-	 * Must be authenticated
-	 */
-	Route.group(() => {
-		Route.get('me', 'UsersController.me')
-
-		/**
-		 * Create delete upvotes
-		 */
-		Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
-		Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
-
-		/**
-		 * Create/Edit/Delete threads
-		 */
-		Route.post('posts/:id/threads', 'ThreadsController.store')
-		Route.put('threads/:id', 'ThreadsController.update')
-		Route.delete('threads/:id', 'ThreadsController.delete')
-	}).middleware('auth')
 }).prefix('v1')

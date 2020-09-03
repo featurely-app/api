@@ -5,9 +5,6 @@ import { TenantFactory } from 'Database/factories/User'
 
 export default class AppSeeder extends BaseSeeder {
 	public async run() {
-		// await Tenant.truncate(true)
-		// await User.truncate(true)
-
 		await this.client.transaction(async (trx) => {
 			const tenant = await TenantFactory.merge({
 				subdomain: 'adonisjs',

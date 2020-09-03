@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon'
-import { SortOptions } from 'Contracts/enums'
-
 import User from 'App/Models/User'
-import Database from '@ioc:Adonis/Lucid/Database'
+import { SortOptions } from 'Contracts/enums'
 import PostThread from 'App/Models/PostThread'
 import PostUpvote from 'App/Models/PostUpvote'
 import Slugify from 'App/Models/Traits/Slugify'
+import Database from '@ioc:Adonis/Lucid/Database'
 import ProjectPhase from 'App/Models/ProjectPhase'
+import MarkdownProcessor from 'App/Services/MarkdownProcessor'
 
 import {
 	column,
@@ -17,6 +17,7 @@ import {
 	hasMany,
 	HasMany,
 	computed,
+	beforeSave,
 } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Post extends BaseModel {
@@ -38,8 +39,20 @@ export default class Post extends BaseModel {
 	@column()
 	public slug: string
 
-	@column()
+	@column({ serializeAs: null })
 	public description: string
+
+	@column({ serializeAs: null })
+	public html: string
+
+	@column()
+	public excerpt: string
+
+	@column({ serializeAs: null })
+	public todos: number
+
+	@column({ serializeAs: null })
+	public todosCompleted: number
 
 	@column.dateTime({ autoCreate: true })
 	public createdAt: DateTime
@@ -47,9 +60,10 @@ export default class Post extends BaseModel {
 	@column.dateTime({ autoCreate: true, autoUpdate: true })
 	public updatedAt: DateTime
 
-	@belongsTo(() => ProjectPhase, {
-		foreignKey: 'phaseId',
-	})
+	@column.dateTime({ autoCreate: true, autoUpdate: true })
+	public lastActivityAt: DateTime
+
+	@belongsTo(() => ProjectPhase, { foreignKey: 'phaseId' })
 	public status: BelongsTo<typeof ProjectPhase>
 
 	@hasMany(() => PostUpvote)
@@ -68,30 +82,43 @@ export default class Post extends BaseModel {
 
 	@computed()
 	public get upvotesCount() {
-		return this.$extras.upvotes_count === undefined ? undefined : Number(this.$extras.upvotes_count)
+		return this.$extras.upvotes_count === undefined
+			? undefined
+			: Number(this.$extras.upvotes_count)
 	}
 
 	@computed()
 	public get threadsCount() {
-		return this.$extras.threads_count === undefined ? undefined : Number(this.$extras.threads_count)
+		return this.$extras.threads_count === undefined
+		? undefined
+		: Number(this.$extras.threads_count)
 	}
 
 	@computed()
-	public get html() {
-		return this.$extras.html === undefined ? undefined : this.$extras.html
-	}
-
-	public static sortBy = scope((query, sortOption: SortOptions) => {
-		if (sortOption === 'latest') {
-			query.orderBy('updatedAt', 'desc')
+	public get content() {
+		if (!this.html || !this.description) {
 			return
 		}
 
-		if (sortOption === 'popular') {
+		return {
+			html: this.html
+		}
+	}
+
+	public static sortBy = scope((query, sortOption: SortOptions) => {
+		if (sortOption === 'newest') {
+			query.orderBy('createdAt', 'desc')
+			return
+		}
+
+		if (sortOption === 'most_voted') {
 			query.orderBy('upvotes_count', 'desc')
 		}
 	})
 
+	/**
+	* Scope to filter the post by its status
+	*/
 	public static filterByStatus = scope((query, phases: string) => {
 		query.whereIn('phaseId', phases.split(','))
 	})
@@ -116,6 +143,19 @@ export default class Post extends BaseModel {
 			).wrap('(', ')')
 		)
 	})
+
+	/**
+	 * Generate HTML for the post before saving it
+	 */
+	@beforeSave()
+	public static async generateHtml(post: Post) {
+		if (post.$dirty.description) {
+			const { html, excerpt } = await MarkdownProcessor.process(post.description)
+			console.log(excerpt)
+			post.html = html
+			post.excerpt = excerpt
+		}
+	}
 
 	public serialize(fields?: any) {
 		return super.serialize({

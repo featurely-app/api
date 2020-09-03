@@ -11,7 +11,14 @@ export default class Posts extends BaseSchema {
 			table.bigInteger('user_id').notNullable().references('id').inTable('users')
 			table.string('title', 500).notNullable()
 			table.string('slug', 500).notNullable()
-			table.text('description', 'longtext').nullable()
+
+			table.text('description', 'longtext').notNullable()
+			table.text('html', 'longtext').notNullable()
+			table.string('excerpt', 300).notNullable()
+      table.integer('todos', 4).notNullable().defaultTo(0)
+      table.integer('completed_todos', 4).notNullable().defaultTo(0)
+
+			table.timestamp('last_activity_at').notNullable()
 			table.timestamps(true)
 		})
 	}

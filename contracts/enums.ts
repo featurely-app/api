@@ -1,5 +1,5 @@
 export enum SortOptions {
 	trending = 'trending',
-	popular = 'popular',
-	latest = 'latest',
+	most_voted = 'most_voted',
+	newest = 'newest',
 }

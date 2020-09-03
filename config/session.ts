@@ -75,7 +75,7 @@ const sessionConfig: SessionConfig = {
 	cookie: {
 		path: '/',
 		httpOnly: true,
-		sameSite: 'strict',
+		sameSite: 'lax',
 	},
 
 	/*

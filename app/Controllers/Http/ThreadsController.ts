@@ -1,5 +1,7 @@
+import { DateTime } from 'luxon'
 import Post from 'App/Models/Post'
 import PostThread from 'App/Models/PostThread'
+import Database from '@ioc:Adonis/Lucid/Database'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
@@ -39,10 +41,16 @@ export default class ThreadsController {
 			}),
 		})
 
-		const post = await Post.findOrFail(params.id)
-		const thread = await post
-			.related('threads')
-			.create({ userId: auth.user!.id, comment: payload.comment })
+		const thread = await Database.transaction(async (trx) => {
+			const post = await Post.findOrFail(params.id, { client: trx })
+			const thread = await post
+				.related('threads')
+				.create({ userId: auth.user!.id, comment: payload.comment })
+
+			post.lastActivityAt = DateTime.local()
+			await post.save()
+			return thread
+		})
 
 		return {
 			data: thread,

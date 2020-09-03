@@ -1,5 +1,4 @@
 import Post from 'App/Models/Post'
-import Markdown from '@dimerapp/markdown'
 import Project from 'App/Models/Project'
 import { SortOptions } from 'Contracts/enums'
 import { schema } from '@ioc:Adonis/Core/Validator'
@@ -21,7 +20,7 @@ export default class PostsController {
 		const query = project
 			.related('posts')
 			.query()
-			.select('title', 'id', 'slug', 'createdAt', 'updatedAt', 'phaseId', 'userId')
+			.select('title', 'id', 'slug', 'createdAt', 'updatedAt', 'phaseId', 'userId', 'lastActivityAt')
 			.withCount('upvotes')
 			.withCount('threads')
 			.preload('status')
@@ -32,7 +31,7 @@ export default class PostsController {
 				}
 			})
 
-		query.apply((scopes) => scopes.sortBy(payload.sort || SortOptions.latest))
+		query.apply((scopes) => scopes.sortBy(payload.sort || SortOptions.newest))
 		if (payload.filters?.status) {
 			query.apply((scopes) => scopes.filterByStatus(payload.filters?.status!))
 		}
@@ -50,7 +49,7 @@ export default class PostsController {
 		}
 	}
 
-	public async show({ params, auth, request, view }: HttpContextContract) {
+	public async show({ params, auth }: HttpContextContract) {
 		const post = await Post.query()
 			.withCount('upvotes')
 			.withCount('threads')
@@ -63,13 +62,6 @@ export default class PostsController {
 				}
 			})
 			.firstOrFail()
-
-		const html = await new Markdown(post.description).toHTML()
-		post.$extras.html = html.contents
-
-		if (request.url().startsWith('/web')) {
-			return view.render('post', { post })
-		}
 
 		return {
 			data: post.serialize({ omit: ['description'] }),
