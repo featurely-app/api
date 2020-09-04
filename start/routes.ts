@@ -47,6 +47,7 @@ Route.group(() => {
 	/**
 	 * Create delete upvotes
 	 */
+	Route.post('projects/:id/posts', 'PostsController.store')
 	Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
 	Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
 

@@ -12,7 +12,7 @@ import MarkdownProcessor from 'App/Services/MarkdownProcessor'
 
 export default class PostThread extends BaseModel {
 	@column({ isPrimary: true })
-	public id: number
+	public id: string
 
 	@column({ serializeAs: null })
 	public postId: string

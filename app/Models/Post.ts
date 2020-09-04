@@ -22,7 +22,7 @@ import {
 
 export default class Post extends BaseModel {
 	@column({ isPrimary: true })
-	public id: number
+	public id: string
 
 	@column({ serializeAs: null })
 	public projectId: string

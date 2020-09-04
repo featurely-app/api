@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
 import Post from 'App/Models/Post'
+import User from 'App/Models/User'
 import Slugify from 'App/Models/Traits/Slugify'
 import ProjectPhase from 'App/Models/ProjectPhase'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Project extends BaseModel {
 	@column({ isPrimary: true })
@@ -34,6 +35,9 @@ export default class Project extends BaseModel {
 
 	@hasMany(() => ProjectPhase)
 	public statuses: HasMany<typeof ProjectPhase>
+
+	@manyToMany(() => User, { pivotTable: 'project_users' })
+	public users: ManyToMany<typeof User>
 }
 
 Slugify(Project, 'name')

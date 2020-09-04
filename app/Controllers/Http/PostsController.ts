@@ -1,7 +1,7 @@
 import Post from 'App/Models/Post'
 import Project from 'App/Models/Project'
 import { SortOptions } from 'Contracts/enums'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
@@ -47,6 +47,33 @@ export default class PostsController {
 			},
 			data: posts.all(),
 		}
+	}
+
+	public async store({ request, params, auth }: HttpContextContract) {
+		const payload = await request.validate({
+			schema: schema.create({
+				title: schema.string({ escape: true }),
+				description: schema.string({}),
+				statusId: schema.string({}, [
+					rules.exists({ table: 'project_phases', column: 'id', where: { project_id: params.id } })
+				])
+			})
+		})
+
+		const project = await Project
+			.query()
+			.where('id', params.id)
+			.whereHas('users', (query) => query.where('user_id', auth.user!.id))
+			.firstOrFail()
+
+		const post = await project.related('posts').create({
+			title: payload.title,
+			description: payload.description,
+			phaseId: payload.statusId,
+			userId: auth.user!.id,
+		})
+
+		return { data: post }
 	}
 
 	public async show({ params, auth }: HttpContextContract) {
