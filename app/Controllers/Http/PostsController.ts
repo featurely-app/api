@@ -63,7 +63,7 @@ export default class PostsController {
 		const project = await Project
 			.query()
 			.where('id', params.id)
-			.whereHas('users', (query) => query.where('user_id', auth.user!.id))
+			// .whereHas('users', (query) => query.where('user_id', auth.user!.id))
 			.firstOrFail()
 
 		const post = await project.related('posts').create({
