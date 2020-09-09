@@ -70,8 +70,3 @@ Route.group(() => {
 	Route.get('projects/:id/posts', 'PostsController.index')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
 }).prefix('v1')
-
-Route.group(() => {
-	Route.get('posts/:id', 'Web/PostsController.show').as('post')
-	Route.get('projects/:id', 'Web/ProjectsController.show')
-}).prefix('web')
