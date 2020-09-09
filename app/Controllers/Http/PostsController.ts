@@ -103,7 +103,7 @@ export default class PostsController {
 			.firstOrFail()
 
 		return {
-			data: post.serialize({ omit: ['description'] }),
+			data: post,
 		}
 	}
 

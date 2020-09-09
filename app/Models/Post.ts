@@ -105,6 +105,7 @@ export default class Post extends BaseModel {
 
 		return {
 			html: this.html,
+			text: this.description,
 		}
 	}
 
