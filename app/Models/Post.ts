@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import User from 'App/Models/User'
+import Project from 'App/Models/Project'
 import { SortOptions } from 'Contracts/enums'
 import PostThread from 'App/Models/PostThread'
 import PostUpvote from 'App/Models/PostUpvote'
@@ -54,6 +55,9 @@ export default class Post extends BaseModel {
 	@column({ serializeAs: null })
 	public todosCompleted: number
 
+	@column.dateTime()
+	public deletedAt: DateTime | null
+
 	@column.dateTime({ autoCreate: true })
 	public createdAt: DateTime
 
@@ -65,6 +69,9 @@ export default class Post extends BaseModel {
 
 	@belongsTo(() => ProjectPhase, { foreignKey: 'phaseId' })
 	public status: BelongsTo<typeof ProjectPhase>
+
+	@belongsTo(() => Project)
+	public project: BelongsTo<typeof Project>
 
 	@hasMany(() => PostUpvote)
 	public upvotes: HasMany<typeof PostUpvote>

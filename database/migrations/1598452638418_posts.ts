@@ -18,6 +18,7 @@ export default class Posts extends BaseSchema {
 			table.integer('todos', 4).notNullable().defaultTo(0)
 			table.integer('completed_todos', 4).notNullable().defaultTo(0)
 
+			table.timestamp('deleted_at').nullable().defaultTo(null)
 			table.timestamp('last_activity_at').notNullable()
 			table.timestamps(true)
 		})

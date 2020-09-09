@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import Post from 'App/Models/Post'
 import Project from 'App/Models/Project'
 import { SortOptions } from 'Contracts/enums'
@@ -34,6 +35,7 @@ export default class PostsController {
 			.withCount('threads')
 			.preload('status')
 			.preload('author')
+			.whereNull('deletedAt')
 			.apply((scopes) => {
 				if (auth.user) {
 					scopes.findUserUpvotes(auth.user.id)
@@ -69,10 +71,11 @@ export default class PostsController {
 			}),
 		})
 
-		const project = await Project.query()
-			.where('id', params.id)
-			// .whereHas('users', (query) => query.where('user_id', auth.user!.id))
-			.firstOrFail()
+		/**
+		 * @todo
+		 * Later ensure user is allowed to access the project
+		 */
+		const project = await Project.query().where('id', params.id).firstOrFail()
 
 		const post = await project.related('posts').create({
 			title: payload.title,
@@ -96,10 +99,43 @@ export default class PostsController {
 					scopes.findUserUpvotes(auth.user.id)
 				}
 			})
+			.whereNull('deletedAt')
 			.firstOrFail()
 
 		return {
 			data: post.serialize({ omit: ['description'] }),
 		}
+	}
+
+	public async update({ request, params }) {
+		const post = await Post.query().whereNull('deletedAt').where('id', params.id).firstOrFail()
+
+		const payload = await request.validate({
+			schema: schema.create({
+				title: schema.string({ escape: true }),
+				description: schema.string({}),
+				statusId: schema.string({}, [
+					rules.exists({
+						table: 'project_phases',
+						column: 'id',
+						where: { project_id: post.projectId },
+					}),
+				]),
+			}),
+		})
+
+		post.title = payload.title
+		post.description = payload.description
+		post.status = payload.statusId
+		await post.save()
+
+		return { data: post }
+	}
+
+	public async archive({ params }) {
+		const post = await Post.query().whereNull('deletedAt').where('id', params.id).firstOrFail()
+		post.deletedAt = DateTime.local()
+		await post.save()
+		return { ok: true }
 	}
 }

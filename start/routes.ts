@@ -45,9 +45,15 @@ Route.group(() => {
 	Route.get('me', 'UsersController.me')
 
 	/**
-	 * Create delete upvotes
+	 * Manage post
 	 */
 	Route.post('projects/:id/posts', 'PostsController.store')
+	Route.put('posts/:id', 'PostsController.update')
+	Route.patch('posts/:id/archive', 'PostsController.archive')
+
+	/**
+	 * Create delete upvotes
+	 */
 	Route.post('posts/:id/upvotes', 'PostUpvotesController.store')
 	Route.delete('posts/:id/upvotes', 'PostUpvotesController.delete')
 
