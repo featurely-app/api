@@ -107,7 +107,7 @@ export default class PostsController {
 		}
 	}
 
-	public async update({ request, params }) {
+	public async update({ request, params }: HttpContextContract) {
 		const post = await Post.query().whereNull('deletedAt').where('id', params.id).firstOrFail()
 
 		const payload = await request.validate({
@@ -126,10 +126,10 @@ export default class PostsController {
 
 		post.title = payload.title
 		post.description = payload.description
-		post.status = payload.statusId
+		post.phaseId = payload.statusId
 		await post.save()
 
-		return { data: post }
+		return { data: post.serialize() }
 	}
 
 	public async archive({ params }) {
