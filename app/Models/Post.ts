@@ -82,16 +82,12 @@ export default class Post extends BaseModel {
 
 	@computed()
 	public get upvotesCount() {
-		return this.$extras.upvotes_count === undefined
-			? undefined
-			: Number(this.$extras.upvotes_count)
+		return this.$extras.upvotes_count === undefined ? undefined : Number(this.$extras.upvotes_count)
 	}
 
 	@computed()
 	public get threadsCount() {
-		return this.$extras.threads_count === undefined
-		? undefined
-		: Number(this.$extras.threads_count)
+		return this.$extras.threads_count === undefined ? undefined : Number(this.$extras.threads_count)
 	}
 
 	@computed()
@@ -101,7 +97,7 @@ export default class Post extends BaseModel {
 		}
 
 		return {
-			html: this.html
+			html: this.html,
 		}
 	}
 
@@ -117,8 +113,8 @@ export default class Post extends BaseModel {
 	})
 
 	/**
-	* Scope to filter the post by its status
-	*/
+	 * Scope to filter the post by its status
+	 */
 	public static filterByStatus = scope((query, phases: string) => {
 		query.whereIn('phaseId', phases.split(','))
 	})

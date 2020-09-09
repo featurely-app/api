@@ -10,7 +10,7 @@ export default class PostComments extends BaseSchema {
 			table.bigInteger('user_id').notNullable().references('id').inTable('users')
 			table.text('comment', 'longtext').notNullable()
 			table.text('html', 'longtext').notNullable()
-      table.string('excerpt', 300).notNullable()
+			table.string('excerpt', 300).notNullable()
 			table.timestamps(true)
 		})
 	}

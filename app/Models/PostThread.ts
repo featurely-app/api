@@ -46,7 +46,7 @@ export default class PostThread extends BaseModel {
 
 		return {
 			text: this.comment,
-			html: this.html
+			html: this.html,
 		}
 	}
 

@@ -57,7 +57,9 @@ Route.group(() => {
 	Route.post('posts/:id/threads', 'ThreadsController.store')
 	Route.put('threads/:id', 'ThreadsController.update')
 	Route.delete('threads/:id', 'ThreadsController.delete')
-}).prefix('v1').middleware('auth')
+})
+	.prefix('v1')
+	.middleware('auth')
 
 /**
  * View public projects and posts
@@ -68,3 +70,8 @@ Route.group(() => {
 	Route.get('projects/:id/posts', 'PostsController.index')
 	Route.get('posts/:id/threads', 'ThreadsController.index')
 }).prefix('v1')
+
+Route.group(() => {
+	Route.get('posts/:id', 'Web/PostsController.show').as('post')
+	Route.get('projects/:id', 'Web/ProjectsController.show')
+}).prefix('web')

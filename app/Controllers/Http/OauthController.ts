@@ -8,8 +8,8 @@ export default class OauthsController {
 	/**
 	 * Redirects the user to github for login
 	 */
-  public async redirect({ request, response }: HttpContextContract) {
-  	response.cookie('redirect_to', request.input('redirect_to'))
+	public async redirect({ request, response }: HttpContextContract) {
+		response.cookie('redirect_to', request.input('redirect_to'))
 
 		const redirectUrl = new Oauth2()
 			.authorizationRequest('https://github.com/login/oauth/authorize')

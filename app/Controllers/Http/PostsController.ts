@@ -20,7 +20,16 @@ export default class PostsController {
 		const query = project
 			.related('posts')
 			.query()
-			.select('title', 'id', 'slug', 'createdAt', 'updatedAt', 'phaseId', 'userId', 'lastActivityAt')
+			.select(
+				'title',
+				'id',
+				'slug',
+				'createdAt',
+				'updatedAt',
+				'phaseId',
+				'userId',
+				'lastActivityAt'
+			)
 			.withCount('upvotes')
 			.withCount('threads')
 			.preload('status')
@@ -55,13 +64,12 @@ export default class PostsController {
 				title: schema.string({ escape: true }),
 				description: schema.string({}),
 				statusId: schema.string({}, [
-					rules.exists({ table: 'project_phases', column: 'id', where: { project_id: params.id } })
-				])
-			})
+					rules.exists({ table: 'project_phases', column: 'id', where: { project_id: params.id } }),
+				]),
+			}),
 		})
 
-		const project = await Project
-			.query()
+		const project = await Project.query()
 			.where('id', params.id)
 			// .whereHas('users', (query) => query.where('user_id', auth.user!.id))
 			.firstOrFail()

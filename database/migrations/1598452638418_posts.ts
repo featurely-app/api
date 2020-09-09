@@ -15,8 +15,8 @@ export default class Posts extends BaseSchema {
 			table.text('description', 'longtext').notNullable()
 			table.text('html', 'longtext').notNullable()
 			table.string('excerpt', 300).notNullable()
-      table.integer('todos', 4).notNullable().defaultTo(0)
-      table.integer('completed_todos', 4).notNullable().defaultTo(0)
+			table.integer('todos', 4).notNullable().defaultTo(0)
+			table.integer('completed_todos', 4).notNullable().defaultTo(0)
 
 			table.timestamp('last_activity_at').notNullable()
 			table.timestamps(true)
